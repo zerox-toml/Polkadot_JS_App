@@ -26,6 +26,8 @@ import { settings } from '@polkadot/ui-settings';
 import { formatBalance, isNumber, isTestChain, objectSpread, stringify } from '@polkadot/util';
 import { defaults as addressDefaults } from '@polkadot/util-crypto/address/defaults';
 
+import { typesBundle as quantovaTypesBundle } from '@quantova-network/types-bundle';
+
 import { lightSpecs, relaySpecs } from './light/index.js';
 import { statics } from './statics.js';
 import { decodeUrlTypes } from './urlTypes.js';
@@ -268,12 +270,14 @@ async function createApi (apiUrl: string, signer: ApiSigner, isLocalFork: boolea
       provider = new WsProvider(apiUrl);
     }
 
+    console.log("hello-typebundle",  statics.registry);
     statics.api = new ApiPromise({
       provider,
       registry: statics.registry,
       signer,
       types,
-      typesBundle
+      typesBundle,
+      hasher: quantovaTypesBundle.spec?.quantova?.hasher
     });
 
     // See https://github.com/polkadot-js/api/pull/4672#issuecomment-1078843960

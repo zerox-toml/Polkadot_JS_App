@@ -121,5 +121,9 @@
     "@polkadot/x-textencoder": "^13.5.1",
     "@polkadot/x-ws": "^13.5.1",
     "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@quantova-network/types-bundle": "^1.1.1",
+    "js-sha3": "^0.9.3"
   }
 }

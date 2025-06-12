@@ -51364,6 +51364,231 @@ export const typesBundle = {
         }
       ]
     },
+    "quantova": {
+        "alias": {
+          "quantova": {
+            "BlockNumber": "u32",
+            "Hash": "H256",
+            "AccountId": "AccountId32",
+            "Balance": "u128",
+        }
+        },
+      "hasher": "sha3Hasher",
+      "rpc": {
+        "quantum":  {
+          "getBlockHash": {
+            "description": "Get the hash of a block by its number",
+            "params": [
+              { "name": "blockNumber", "type": "BlockNumber" }
+            ],
+            "type": "Hash"
+          },
+          "getBlock": {
+            "description": "Get a block by its hash",
+            "params": [
+              { "name": "blockHash", "type": "Hash" }
+            ],
+            "type": "SignedBlock"
+          },
+          "getFinalizedHead": {
+            "description": "Get the hash of the last finalized block",
+            "params": [],
+            "type": "Hash"
+          }
+        },
+        "xcm": {
+          "injectDownwardMessage": {
+            "description": "Inject a downward message from the relay chain.",
+            "params": [{ "name": "message", "type": "Vec<u8>" }],
+            "type": "Result<()>"
+          },
+          "injectHrmpMessage": {
+            "description": "Inject an HRMP message from a dedicated channel from a sibling parachain",
+            "params": [
+              { "name": "sender", "type": "ParaId" },
+              { "name": "message", "type": "Vec<u8>" }
+            ],
+            "type": "Result<()>"
+          }
+        },
+        "debug": {
+          "traceTransaction": {
+            "description": "Debug trace transaction",
+            "params": [{ "name": "transaction_hash", "type": "H256" }],
+            "type": "Result<Vec<TransactionTrace>>"
+          }
+        },
+      },
+      "instances": {
+        "council": [
+          "councilCollective"
+        ],
+        "technicalCommittee": [
+          "techCommitteeCollective"
+        ]
+      },
+      "types": {
+        "AccountId": "AccountId32",
+        "AccountId32": "H256",
+        "Address": "AccountId32",
+        "Balance": "u128",
+        "BlockNumber": "u32",
+        "Hash": "H256",
+        "Header": {
+          "parentHash": "Hash",
+          "number": "Compact<BlockNumber>",
+          "stateRoot": "Hash",
+          "extrinsicsRoot": "Hash",
+          "digest": "Digest"
+        },
+        "Digest": {
+          "logs": "Vec<DigestItem>"
+        },
+        "HasherAlgo": {
+              "_enum": [
+                "Sha3Hasher",
+              ]
+            },
+        "DigestItem": {
+          "_enum": {
+            "Other": "Bytes",
+            "Consensus": "Consensus",
+            "Seal": "Seal",
+            "PreRuntime": "PreRuntime",
+            "RuntimeEnvironmentUpdated": "Null"
+          }
+        },
+        "Consensus": "(ConsensusEngineId, Bytes)",
+        "Seal": "(ConsensusEngineId, Bytes)",
+        "PreRuntime": "(ConsensusEngineId, Bytes)",
+        "ConsensusEngineId": "[u8; 4]",
+
+        "QuantumBlock": {
+          "header": "Header",
+          "extrinsics": "Vec<UncheckedExtrinsic>"
+        },
+        "UncheckedExtrinsic": {
+          "signature": "Option<MultiSignature>",
+          "function": "Call"
+        },
+        "MultiSignature": {
+          "_enum": {
+            "Ed25519": "Ed25519Signature",
+            "Sr25519": "Sr25519Signature",
+            "Ecdsa": "EcdsaSignature"
+          }
+        },
+        "Ed25519Signature": "[u8; 64]",
+        "Sr25519Signature": "[u8; 64]",
+        "EcdsaSignature": "[u8; 65]",
+        "Call": "Call",
+
+        "MultiLocation": {
+          "parents": "u8",
+          "interior": "Junctions"
+        },
+        "Junctions": {
+          "_enum": {
+            "Here": "Null",
+            "X1": "Junction",
+            "X2": "(Junction, Junction)",
+            "X3": "(Junction, Junction, Junction)",
+            "X4": "(Junction, Junction, Junction, Junction)",
+            "X5": "(Junction, Junction, Junction, Junction, Junction)",
+            "X6": "(Junction, Junction, Junction, Junction, Junction, Junction)",
+            "X7": "(Junction, Junction, Junction, Junction, Junction, Junction, Junction)",
+            "X8": "(Junction, Junction, Junction, Junction, Junction, Junction, Junction, Junction)"
+    }
+        },
+        "Junction": {
+          "_enum": {
+            "Parachain": "Compact<u32>",
+            "AccountId32": "AccountId32Junction",
+            "AccountIndex64": "AccountIndex64Junction",
+            "AccountKey20": "AccountKey20Junction",
+            "PalletInstance": "u8",
+            "GeneralIndex": "Compact<u128>",
+            "GeneralKey": "Vec<u8>",
+            "OnlyChild": "Null",
+            "Plurality": "PluralityJunction"
+          }
+        },
+        "AccountId32Junction": {
+          "network": "NetworkId",
+          "id": "[u8; 32]"
+        },
+        "AccountIndex64Junction": {
+          "network": "NetworkId",
+          "index": "Compact<u64>"
+        },  
+        "AccountKey20Junction": {
+          "network": "NetworkId",
+          "key": "[u8; 20]"
+        },
+        "PluralityJunction": {
+          "id": "BodyId",
+          "part": "BodyPart"
+        },
+        "NetworkId": {
+          "_enum": {
+            "Any": "Null",
+            "Named": "Vec<u8>",
+            "Polkadot": "Null",
+            "Kusama": "Null"
+    }
+  },
+        "BodyId": {
+          "_enum": {
+            "Unit": "Null",
+            "Named": "Vec<u8>",
+            "Index": "Compact<u32>",
+            "Executive": "Null",
+            "Technical": "Null",
+            "Legislative": "Null",
+            "Judicial" : "Null"
+          }
+        },
+        "BodyPart": {
+          "_enum": {
+            "Voice": "Null",
+            "Members": "Compact<u32>",
+            "Fraction": "Fraction",
+            "AtLeastProportion": "Fraction",
+            "MoreThanProportion": "Fraction"
+          }
+  },
+        "Fraction": {
+          "nom": "Compact<u32>",
+          "denom": "Compact<u32>"
+        },
+
+        // Debug types
+        "TransactionTrace": {
+          "blockHash": "Hash",
+          "blockNumber": "BlockNumber",
+          "transactionHash": "Hash",
+          "transactionPosition": "u32",
+          "from": "AccountId",
+          "to": "Option<AccountId>",
+          "value": "Balance",
+          "gasPrice": "u128",
+          "gas": "u64",
+          "input": "Bytes",
+          "output": "Bytes",
+          "traces": "Vec<CallTrace>"
+        },
+        "CallTrace": {
+          "type": "String",
+          "from": "AccountId",
+          "to": "AccountId",
+          "value": "Balance",
+          "gas": "u64",
+          "input": "Bytes",
+          "output": "Bytes"
+          }
+        }
+      },
+    
     "moonbeam": {
       "alias": {
         "assetManager": {
